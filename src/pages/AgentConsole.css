@@ -1,0 +1,40 @@
+.agent-page {
+  padding: 30px;
+  font-family: Arial;
+}
+
+.agent-card {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid #ddd;
+  width: 650px;
+  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+.agent-card ul {
+  margin-top: 15px;
+  line-height: 1.8;
+}
+
+.confirm-btn {
+  margin-top: 20px;
+  padding: 12px;
+  width: 100%;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.back-btn {
+  margin-top: 10px;
+  padding: 12px;
+  width: 100%;
+  background: darkred;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}

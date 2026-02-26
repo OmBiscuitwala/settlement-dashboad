@@ -1,0 +1,19 @@
+.sim-box {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f1f7ff;
+  border-radius: 12px;
+  border: 1px solid #0a2a66;
+}
+
+.sim-box label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.sim-note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: gray;
+}

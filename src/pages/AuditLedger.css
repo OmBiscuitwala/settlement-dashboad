@@ -1,0 +1,46 @@
+.ledger-page {
+  padding: 30px;
+  font-family: Arial;
+}
+
+.empty {
+  margin-top: 20px;
+  color: gray;
+  font-style: italic;
+}
+
+/* Timeline Layout */
+.timeline {
+  margin-top: 25px;
+  border-left: 4px solid #0a2a66;
+  padding-left: 20px;
+}
+
+.timeline-event {
+  margin-bottom: 20px;
+}
+
+.time {
+  font-weight: bold;
+  font-size: 13px;
+  color: gray;
+}
+
+.event {
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.level {
+  margin-left: 10px;
+  font-size: 13px;
+  font-weight: bold;
+  color: red;
+}
+
+/* Compliance Note */
+.note {
+  margin-top: 30px;
+  font-weight: bold;
+  color: green;
+}

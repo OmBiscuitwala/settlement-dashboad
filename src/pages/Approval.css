@@ -1,0 +1,79 @@
+.approval-page {
+  padding: 30px;
+  font-family: Arial;
+}
+
+.approval-card {
+  margin-top: 20px;
+  background: white;
+  padding: 25px;
+  width: 500px;
+  border-radius: 15px;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.amount {
+  font-size: 20px;
+  font-weight: bold;
+  color: green;
+}
+
+.risk {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.risk span {
+  color: red;
+  font-weight: bold;
+}
+
+.btn-group {
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 15px;
+}
+
+.approve {
+  background: green;
+  color: white;
+}
+
+.reject {
+  background: darkred;
+  color: white;
+}
+
+.back {
+  margin-top: 25px;
+  background: gray;
+  color: white;
+}
+
+.status {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.blocked-box {
+  margin: 15px 0;
+  padding: 12px;
+  background: #ffe5e5;
+  border: 1px solid red;
+  border-radius: 10px;
+  font-weight: bold;
+  color: darkred;
+}
+
+button:disabled {
+  background: gray !important;
+  cursor: not-allowed;
+}

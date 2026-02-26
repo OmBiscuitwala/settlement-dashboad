@@ -1,0 +1,52 @@
+.overlay-container {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 999;
+}
+
+.overlay-btn {
+  background: #0a2a66;
+  color: white;
+  padding: 14px 18px;
+  border-radius: 50px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.overlay-box {
+  margin-top: 12px;
+  width: 280px;
+  background: white;
+  border: 1px solid #0a2a66;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+}
+
+.overlay-box textarea {
+  width: 100%;
+  height: 70px;
+  border-radius: 10px;
+  padding: 8px;
+  resize: none;
+}
+
+.run-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.error {
+  margin-top: 10px;
+  color: red;
+  font-weight: bold;
+  font-size: 13px;
+}

@@ -1,0 +1,77 @@
+.agent-trace {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+  font-family: Arial;
+}
+
+.agent-trace h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.trace-section {
+  margin-bottom: 18px;
+}
+
+.trace-title {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.trace-box {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  font-style: italic;
+}
+
+.trace-code {
+  background: #111827;
+  color: #00ff99;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  overflow-x: auto;
+}
+
+.trace-steps {
+  padding-left: 18px;
+  line-height: 1.7;
+}
+
+.trace-steps span {
+  font-size: 12px;
+  color: gray;
+}
+
+.critical {
+  color: red;
+  font-weight: bold;
+}
+
+.waiting {
+  padding: 10px;
+  background: #fff3cd;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #856404;
+}
+
+.approved {
+  padding: 10px;
+  background: #d4edda;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #155724;
+}
+
+.rejected {
+  padding: 10px;
+  background: #f8d7da;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #721c24;
+}
