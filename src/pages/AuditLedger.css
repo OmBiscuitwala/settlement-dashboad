@@ -1,46 +1,96 @@
 .ledger-page {
-  padding: 30px;
-  font-family: Arial;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ledger-page h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 30px;
+  letter-spacing: -0.5px;
 }
 
 .empty {
-  margin-top: 20px;
-  color: gray;
+  margin-top: 30px;
+  color: #94a3b8;
   font-style: italic;
+  font-size: 16px;
 }
 
 /* Timeline Layout */
 .timeline {
-  margin-top: 25px;
-  border-left: 4px solid #0a2a66;
-  padding-left: 20px;
+  margin-top: 35px;
+  border-left: 3px solid #cbd5e1;
+  padding-left: 30px;
+  position: relative;
 }
 
 .timeline-event {
-  margin-bottom: 20px;
+  margin-bottom: 35px;
+  position: relative;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.timeline-event:hover {
+  transform: translateX(5px);
+  border-color: #cbd5e1;
+}
+
+.timeline-event::before {
+  content: '';
+  position: absolute;
+  left: -38px;
+  top: 24px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 3px solid #eff6ff;
+  box-shadow: 0 0 0 3px #bfdbfe;
 }
 
 .time {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 13px;
-  color: gray;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .event {
   font-size: 16px;
-  margin-top: 5px;
+  margin-top: 8px;
+  color: #1e293b;
+  font-weight: 500;
 }
 
 .level {
-  margin-left: 10px;
-  font-size: 13px;
-  font-weight: bold;
-  color: red;
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
 }
 
 /* Compliance Note */
 .note {
-  margin-top: 30px;
-  font-weight: bold;
-  color: green;
+  margin-top: 40px;
+  padding: 16px 20px;
+  font-weight: 500;
+  color: #16a34a;
+  background: #f0fdf4;
+  border-left: 4px solid #22c55e;
+  border-radius: 8px;
+  font-size: 14px;
 }

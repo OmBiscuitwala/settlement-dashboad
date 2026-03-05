@@ -21,3 +21,12 @@ export const merchants = [
     ]
   }
 ];
+
+export const merchantById = merchants.reduce((acc, merchant) => {
+  acc[merchant.id] = merchant;
+  return acc;
+}, {});
+
+export function getMerchantById(id) {
+  return merchantById[id];
+}

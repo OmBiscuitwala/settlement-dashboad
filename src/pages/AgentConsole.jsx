@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { readJSON, STORAGE_KEYS } from "../utils/storage";
 
 import "./AgentConsole.css";
 
@@ -7,7 +8,7 @@ function AgentConsole() {
   const navigate = useNavigate();
 
   // ✅ Load Agent Output from Overlay
-  const result = JSON.parse(localStorage.getItem("agentResult"));
+  const result = useMemo(() => readJSON(STORAGE_KEYS.AGENT_RESULT), []);
 
   if (!result) {
     return <h2 style={{ padding: "30px" }}>No Agent Execution Found</h2>;

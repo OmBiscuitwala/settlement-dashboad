@@ -1,19 +1,21 @@
 .top-banner {
-  background: #fff3cd;
-  border-bottom: 2px solid #ffcc00;
+  background: linear-gradient(to right, #fef3c7, #fde68a);
+  border-bottom: 1px solid #fcd34d;
   padding: 12px 30px;
-  font-family: Arial;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .top-banner h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: bold;
-  color: #856404;
+  font-size: 15px;
+  font-weight: 700;
+  color: #b45309;
+  letter-spacing: 0.5px;
 }
 
 .top-banner p {
-  margin: 2px 0 0;
+  margin: 4px 0 0;
   font-size: 13px;
-  color: #856404;
+  color: #92400e;
 }
