@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { merchants } from "../data";
@@ -23,6 +23,17 @@ function AgentOverlay() {
       })),
     []
   );
+
+  useEffect(() => {
+    const handleOpenAgent = (e) => {
+      setOpen(true);
+      if (e.detail?.prompt) {
+        setPrompt(e.detail.prompt);
+      }
+    };
+    window.addEventListener("OPEN_AGENT", handleOpenAgent);
+    return () => window.removeEventListener("OPEN_AGENT", handleOpenAgent);
+  }, []);
 
   // ✅ Run Instruction Like Real Bank Copilot
   const handleSubmit = () => {

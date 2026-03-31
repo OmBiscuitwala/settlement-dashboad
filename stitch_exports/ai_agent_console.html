@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Agent Console &amp; Execution Trace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#4f46e5",
+          "background-light": "#f8fafc",
+          "surface-light": "#ffffff",
+          "border-light": "#e2e8f0",
+        },
+        fontFamily: {
+          "display": ["Inter", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+  }
+</style>
+</head>
+<body class="bg-background-light font-display text-slate-900 min-h-screen flex flex-col antialiased">
+<div class="flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="flex h-full grow flex-col">
+<div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center py-5">
+<div class="flex flex-col max-w-[960px] w-full flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-light px-0 py-4 mb-6">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-slate-900">
+<span class="material-symbols-outlined text-2xl text-primary">account_balance</span>
+<h2 class="text-slate-900 text-lg font-bold leading-tight tracking-tight">StripeOps Dashboard</h2>
+</div>
+<div class="hidden md:block relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full bg-surface-light border border-border-light rounded-full py-2 pl-10 pr-4 text-sm text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent placeholder-slate-400 shadow-sm" placeholder="Search operations..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-slate-500 hover:text-slate-900 transition-colors text-sm font-medium" href="#">Dashboard</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors text-sm font-medium" href="#">Settlements</a>
+<a class="text-primary font-semibold text-sm" href="#">AI Agents</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors text-sm font-medium" href="#">Reports</a>
+</nav>
+<div class="bg-surface-light border border-border-light bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9 flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-slate-500">person</span>
+</div>
+</div>
+</header>
+<div class="flex flex-wrap items-center gap-2 mb-6">
+<a class="text-slate-500 hover:text-slate-900 text-sm font-medium transition-colors" href="#">AI Agents</a>
+<span class="text-slate-300 text-sm">/</span>
+<a class="text-slate-500 hover:text-slate-900 text-sm font-medium transition-colors" href="#">Workflows</a>
+<span class="text-slate-300 text-sm">/</span>
+<span class="text-slate-900 text-sm font-semibold">Execution Trace #9284</span>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
+<div class="flex flex-col gap-2">
+<h1 class="text-slate-900 text-3xl md:text-4xl font-extrabold leading-tight tracking-tight">AI Agent Console</h1>
+<p class="text-slate-500 text-base">Review step-by-step reasoning and approve settlement actions.</p>
+</div>
+<div class="flex items-center gap-2 bg-indigo-50 text-primary px-3 py-1.5 rounded-full border border-indigo-100 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="text-xs font-semibold uppercase tracking-wider">Awaiting Human Approval</span>
+</div>
+</div>
+<div class="mb-8">
+<h3 class="text-slate-900 text-lg font-bold mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">chat</span> Original Prompt
+</h3>
+<div class="bg-surface-light border border-border-light rounded-xl p-5 shadow-sm">
+<div class="flex gap-4 items-start">
+<div class="bg-indigo-50 p-2 rounded-lg text-primary shrink-0 border border-indigo-100">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<p class="text-slate-700 text-base leading-relaxed italic">
+        "Analyze daily transaction volume and calculate Net Payable amount for Vendor XYZ, cross-referencing with SLA terms."
+    </p>
+</div>
+</div>
+</div>
+<div class="mb-10 bg-surface-light border border-border-light rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+<div class="flex items-center gap-4">
+<div class="bg-indigo-50 text-primary p-3 rounded-xl border border-indigo-100">
+<span class="material-symbols-outlined text-3xl">payments</span>
+</div>
+<div>
+<p class="text-slate-500 text-sm font-semibold uppercase tracking-wider mb-1">Calculated Net Payable</p>
+<p class="text-primary text-4xl md:text-5xl font-black tracking-tight">$42,850.00</p>
+</div>
+</div>
+<div class="text-right border-t md:border-t-0 md:border-l border-border-light pt-4 md:pt-0 md:pl-6 w-full md:w-auto flex flex-row md:flex-col justify-between md:justify-center">
+<div>
+<p class="text-slate-400 text-xs font-medium uppercase">Vendor</p>
+<p class="text-slate-800 font-semibold">Vendor XYZ</p>
+</div>
+<div class="mt-0 md:mt-3">
+<p class="text-slate-400 text-xs font-medium uppercase">Confidence Score</p>
+<p class="text-emerald-600 font-bold flex items-center gap-1 justify-end md:justify-end">
+                99.8% <span class="material-symbols-outlined text-sm">verified</span>
+</p>
+</div>
+</div>
+</div>
+<div class="mb-12 relative pl-4 md:pl-0">
+<h3 class="text-slate-900 text-lg font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">timeline</span> AI Execution Trace
+</h3>
+<div class="absolute left-[27px] md:left-[23px] top-14 bottom-0 w-[2px] bg-border-light"></div>
+<div class="flex flex-col gap-6">
+<div class="flex gap-4 relative z-10">
+<div class="w-8 h-8 rounded-full bg-surface-light border-2 border-slate-300 text-slate-500 flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-sm">database</span>
+</div>
+<div class="bg-surface-light border border-border-light rounded-xl p-4 shadow-sm flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-semibold text-slate-900">Data Extraction</h4>
+<span class="text-xs text-slate-400 font-mono">0.2s</span>
+</div>
+<p class="text-sm text-slate-600">Extracted 1,245 daily transactions for Vendor XYZ from primary database.</p>
+</div>
+</div>
+<div class="flex gap-4 relative z-10">
+<div class="w-8 h-8 rounded-full bg-surface-light border-2 border-slate-300 text-slate-500 flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-sm">rule</span>
+</div>
+<div class="bg-surface-light border border-border-light rounded-xl p-4 shadow-sm flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-semibold text-slate-900">SLA Cross-reference</h4>
+<span class="text-xs text-slate-400 font-mono">0.5s</span>
+</div>
+<p class="text-sm text-slate-600 mb-3">Applied SLA terms: 2% processing fee deduction, $0.10 per transaction fixed cost.</p>
+<div class="bg-slate-50 p-3 rounded-lg border border-border-light text-xs font-mono text-slate-600">
+                Gross Volume: $45,000.00<br/>
+                Processing Fee (2%): -$900.00<br/>
+                Fixed Costs (1,245 * $0.10): -$124.50<br/>
+                Adjustments: -$125.50 (Refunds)
+            </div>
+</div>
+</div>
+<div class="flex gap-4 relative z-10">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-md ring-4 ring-indigo-50">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<div class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-4 shadow-sm flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-semibold text-primary">Calculation Complete</h4>
+<span class="text-xs text-primary/70 font-mono">0.1s</span>
+</div>
+<p class="text-sm text-slate-700">Final Net Payable amount determined: <strong class="text-primary font-bold">$42,850.00</strong>. Ready for human approval.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sticky bottom-6 mt-auto">
+<div class="bg-surface-light border border-border-light rounded-2xl p-4 shadow-lg shadow-slate-200/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+<div class="text-sm text-slate-500 hidden md:block">
+        Workflow ID: <span class="font-mono text-slate-700">#9284-XYZ</span>
+</div>
+<div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+<button class="px-6 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-700 font-semibold hover:bg-slate-50 transition-colors shadow-sm w-full sm:w-auto flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">close</span> Cancel Workflow
+        </button>
+<button class="px-6 py-2.5 rounded-lg bg-primary hover:bg-indigo-700 text-white font-semibold shadow-sm transition-colors w-full sm:w-auto flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">verified_user</span> Proceed to Approval
+        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

@@ -3,7 +3,7 @@ import AgentOverlay from "../components/AgentOverlay";
 import React, { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 
-import { getMerchantById } from "../data";
+import { useMerchants } from "../context/MerchantContext";
 import AgentTrace from "../components/AgentTrace";
 import { calculateSettlement } from "../utils/settlement";
 import { STORAGE_KEYS } from "../utils/storage";
@@ -12,7 +12,8 @@ import "./MerchantDetails.css";
 
 function MerchantDetails() {
   const { id } = useParams();
-  const merchant = useMemo(() => getMerchantById(id), [id]);
+  const { getMerchantById } = useMerchants();
+  const merchant = useMemo(() => getMerchantById(id), [id, getMerchantById]);
   const merchantStatus = useMemo(
     () => localStorage.getItem(STORAGE_KEYS.SETTLEMENT_STATUS) || "WAITING",
     []
@@ -97,11 +98,11 @@ function MerchantDetails() {
       </div>
 
       {/* RIGHT COLUMN */}
-      <div className="right-panel"> 
+      <div className="right-panel">
         <AgentTrace merchantId={merchant.id} merchantStatus={merchantStatus} />
       </div>
 
-       {/* Floating Agent Overlay */}
+      {/* Floating Agent Overlay */}
       <AgentOverlay />
 
     </div>

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
-import { getMerchantById } from "../data";
+import { useMerchants } from "../context/MerchantContext";
 import { logEvent } from "../audit";
 import { generateSettlementPDF } from "../utils/reportGenerator";
 import { calculateSettlement, getBlockedReason } from "../utils/settlement";
@@ -13,7 +13,8 @@ import "./Approval.css";
 
 function Approval() {
   const { id } = useParams();
-  const merchant = useMemo(() => getMerchantById(id), [id]);
+  const { getMerchantById } = useMerchants();
+  const merchant = useMemo(() => getMerchantById(id), [id, getMerchantById]);
   const { netPayable } = useMemo(
     () => calculateSettlement(merchant?.transactions),
     [merchant]

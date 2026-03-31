@@ -1,6 +1,8 @@
 export const STORAGE_KEYS = {
   AGENT_RESULT: "agentResult",
   SETTLEMENT_STATUS: "settlementStatus",
+  BILL_AUDIT_RESULTS: "billAuditResults",
+  MERCHANTS_LIST: "merchantsList",
 };
 
 export function readJSON(key) {
@@ -12,4 +14,8 @@ export function readJSON(key) {
   } catch {
     return null;
   }
+}
+
+export function writeJSON(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
 }

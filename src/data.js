@@ -3,6 +3,7 @@ export const merchants = [
     id: "M001",
     name: "Merchant ABC Store",
     bank: "****7890",
+    profit: 7550,
     flagged: false,
     bankMismatch: false,
     transactions: [
@@ -14,6 +15,7 @@ export const merchants = [
     id: "M002",
     name: "Merchant XYZ Mart",
     bank: "****4567",
+    profit: 145000,
     flagged: true,
     bankMismatch: true,
     transactions: [
