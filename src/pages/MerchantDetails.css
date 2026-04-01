@@ -1,95 +1,170 @@
 .bank-layout {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
-  gap: 20px;
-  padding: 25px;
-  font-family: Arial;
+  gap: 24px;
+  padding: 30px 40px;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
-/* LEFT PANEL */
-.left-panel {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+.left-panel,
+.center-panel,
+.right-panel {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.left-panel:hover,
+.center-panel:hover,
+.right-panel:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.left-panel h3,
+.center-panel h3,
+.right-panel h3 {
+  margin-top: 0;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
 }
 
 .risk-box {
-  margin-top: 15px;
-  padding: 10px;
-  background: #ffe5e5;
-  border-radius: 10px;
-  font-weight: bold;
+  margin-top: 20px;
+  padding: 16px;
+  background: #fef2f2;
+  border-left: 4px solid #ef4444;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #7f1d1d;
+  font-size: 14px;
 }
 
 .risk-box span {
-  color: red;
-}
-
-/* CENTER PANEL */
-.center-panel {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+  color: #dc2626;
+  font-weight: 700;
+  display: block;
+  margin-top: 4px;
+  font-size: 15px;
 }
 
 .txn-table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 10px;
 }
 
 .txn-table th,
 .txn-table td {
-  padding: 10px;
-  border: 1px solid #ddd;
-  text-align: center;
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 14px;
 }
 
 .txn-table th {
-  background: #0a2a66;
-  color: white;
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.txn-table tr:hover td {
+  background: #f1f5f9;
 }
 
 .summary-box {
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 10px;
-  background: #f8f9fa;
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.summary-box h3 {
+  margin: 0;
+  border: none;
+  padding: 0;
+  font-size: 16px;
+}
+
+.summary-box p {
+  margin: 0;
+  font-size: 14px;
+  color: #475569;
+  display: flex;
+  justify-content: space-between;
 }
 
 .net {
-  color: green;
-}
-
-/* RIGHT PANEL */
-.right-panel {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+  color: #16a34a;
+  font-weight: 700;
+  font-size: 16px;
 }
 
 .agent-box {
-  margin-top: 15px;
+  margin-top: 20px;
   font-size: 14px;
-  line-height: 1.8;
-  background: #f1f7ff;
-  padding: 15px;
-  border-radius: 10px;
+  line-height: 1.6;
+  background: #eff6ff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #bfdbfe;
+  color: #1e3a8a;
+  position: relative;
 }
 
-/* BUTTON */
+.agent-box::before {
+  content: "✨ AI Insight";
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #2563eb;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
 .btn.green {
-  margin-top: 20px;
-  padding: 12px 18px;
+  margin-top: 25px;
+  padding: 14px 24px;
   border: none;
   border-radius: 10px;
-  background: green;
+  background: #16a34a;
   color: white;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  width: 100%;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(22, 163, 74, 0.2);
+}
+
+.btn.green:hover {
+  background: #15803d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px -1px rgba(22, 163, 74, 0.3);
+}
+
+.btn.green:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 1024px) {
+  .bank-layout {
+    grid-template-columns: 1fr;
+  }
 }

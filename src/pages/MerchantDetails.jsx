@@ -1,38 +1,31 @@
 import AgentOverlay from "../components/AgentOverlay";
 
-import React, { useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 
-import { merchants } from "../data";
+import { useMerchants } from "../context/MerchantContext";
 import AgentTrace from "../components/AgentTrace";
+import { calculateSettlement } from "../utils/settlement";
+import { STORAGE_KEYS } from "../utils/storage";
 
 import "./MerchantDetails.css";
 
 function MerchantDetails() {
   const { id } = useParams();
-  const merchant = merchants.find((m) => m.id === id);
-
-  // ✅ Workflow Status (WAITING / APPROVED / REJECTED)
-  const [status, setStatus] = useState("WAITING");
-
-  // ✅ Load saved status after approval/rejection
-  useEffect(() => {
-    const saved = localStorage.getItem("settlementStatus");
-    if (saved) {
-      setStatus(saved);
-    }
-  }, []);
+  const { getMerchantById } = useMerchants();
+  const merchant = useMemo(() => getMerchantById(id), [id, getMerchantById]);
+  const merchantStatus = useMemo(
+    () => localStorage.getItem(STORAGE_KEYS.SETTLEMENT_STATUS) || "WAITING",
+    []
+  );
+  const { total, fees, refunds, netPayable } = useMemo(
+    () => calculateSettlement(merchant?.transactions),
+    [merchant]
+  );
 
   if (!merchant) {
     return <h2 style={{ padding: "30px" }}>Merchant Not Found</h2>;
   }
-
-  // ✅ Settlement Calculation
-  const total = merchant.transactions.reduce((sum, t) => sum + t.amount, 0);
-  const fees = merchant.transactions.reduce((sum, t) => sum + t.fee, 0);
-  const refunds = merchant.transactions.reduce((sum, t) => sum + t.refund, 0);
-
-  const netPayable = total - fees - refunds;
 
   return (
     <div className="bank-layout">
@@ -105,11 +98,11 @@ function MerchantDetails() {
       </div>
 
       {/* RIGHT COLUMN */}
-      <div className="right-panel"> 
-        <AgentTrace merchantId={merchant.id} /> 
+      <div className="right-panel">
+        <AgentTrace merchantId={merchant.id} merchantStatus={merchantStatus} />
       </div>
 
-       {/* Floating Agent Overlay */}
+      {/* Floating Agent Overlay */}
       <AgentOverlay />
 
     </div>

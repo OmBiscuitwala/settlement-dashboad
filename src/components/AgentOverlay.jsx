@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { merchants } from "../data";
 import { logEvent } from "../audit";
+import { calculateSettlement } from "../utils/settlement";
+import { STORAGE_KEYS } from "../utils/storage";
 
 import "./AgentOverlay.css";
 
@@ -12,6 +14,26 @@ function AgentOverlay() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const normalizedPrompt = prompt.toLowerCase();
+  const merchantLookup = useMemo(
+    () =>
+      merchants.map((merchant) => ({
+        merchant,
+        normalizedName: merchant.name.toLowerCase(),
+      })),
+    []
+  );
+
+  useEffect(() => {
+    const handleOpenAgent = (e) => {
+      setOpen(true);
+      if (e.detail?.prompt) {
+        setPrompt(e.detail.prompt);
+      }
+    };
+    window.addEventListener("OPEN_AGENT", handleOpenAgent);
+    return () => window.removeEventListener("OPEN_AGENT", handleOpenAgent);
+  }, []);
 
   // ✅ Run Instruction Like Real Bank Copilot
   const handleSubmit = () => {
@@ -23,9 +45,10 @@ function AgentOverlay() {
     }
 
     // ✅ Intent Parser (simple prototype)
-    const merchant = merchants.find((m) =>
-      prompt.toLowerCase().includes(m.name.toLowerCase())
+    const merchantMatch = merchantLookup.find(({ normalizedName }) =>
+      normalizedPrompt.includes(normalizedName)
     );
+    const merchant = merchantMatch?.merchant;
 
     if (!merchant) {
       setError("❌ Merchant not found in instruction.");
@@ -33,10 +56,7 @@ function AgentOverlay() {
     }
 
     // ✅ Settlement Calculation
-    const total = merchant.transactions.reduce((s, t) => s + t.amount, 0);
-    const fees = merchant.transactions.reduce((s, t) => s + t.fee, 0);
-    const refunds = merchant.transactions.reduce((s, t) => s + t.refund, 0);
-    const netPayable = total - fees - refunds;
+    const { netPayable } = calculateSettlement(merchant.transactions);
 
     // ✅ Agent Execution Trace Output
     const agentResult = {
@@ -55,7 +75,7 @@ function AgentOverlay() {
     };
 
     // ✅ Store agent output for Approval Page
-    localStorage.setItem("agentResult", JSON.stringify(agentResult));
+    localStorage.setItem(STORAGE_KEYS.AGENT_RESULT, JSON.stringify(agentResult));
 
     // ✅ Compliance Audit Log
     logEvent({

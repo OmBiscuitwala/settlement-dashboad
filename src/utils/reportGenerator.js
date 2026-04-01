@@ -1,6 +1,5 @@
-import jsPDF from "jspdf";
-
-export function generateSettlementPDF(merchant, netPayable) {
+export async function generateSettlementPDF(merchant, netPayable) {
+  const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF();
 
   const refId = "SETTLE-" + Math.floor(Math.random() * 100000);

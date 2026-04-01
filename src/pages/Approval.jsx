@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
-import { merchants } from "../data";
+import { useMerchants } from "../context/MerchantContext";
 import { logEvent } from "../audit";
 import { generateSettlementPDF } from "../utils/reportGenerator";
+import { calculateSettlement, getBlockedReason } from "../utils/settlement";
+import { STORAGE_KEYS } from "../utils/storage";
 
 import SimulationToggle from "../components/SimulationToggle";
 
@@ -11,7 +13,16 @@ import "./Approval.css";
 
 function Approval() {
   const { id } = useParams();
-  const merchant = merchants.find((m) => m.id === id);
+  const { getMerchantById } = useMerchants();
+  const merchant = useMemo(() => getMerchantById(id), [id, getMerchantById]);
+  const { netPayable } = useMemo(
+    () => calculateSettlement(merchant?.transactions),
+    [merchant]
+  );
+  const blockedReason = useMemo(
+    () => (merchant ? getBlockedReason(merchant, netPayable) : ""),
+    [merchant, netPayable]
+  );
 
   const [status, setStatus] = useState("");
 
@@ -23,41 +34,9 @@ function Approval() {
   }
 
   // =====================================================
-  // ✅ Settlement Calculation
-  // =====================================================
-  const total = merchant.transactions.reduce((sum, t) => sum + t.amount, 0);
-  const fees = merchant.transactions.reduce((sum, t) => sum + t.fee, 0);
-  const refunds = merchant.transactions.reduce((sum, t) => sum + t.refund, 0);
-
-  const netPayable = total - fees - refunds;
-
-  // =====================================================
-  // ✅ Enterprise Risk Controls (Upgrade 7 + 8)
-  // =====================================================
-  const THRESHOLD = 100000;
-  let blockedReason = "";
-
-  // Bank mismatch block
-  if (merchant.bankMismatch) {
-    blockedReason = "Bank account mismatch detected — Settlement blocked";
-  }
-
-  // Suspicious merchant block
-  if (merchant.flagged) {
-    blockedReason =
-      "Merchant flagged suspicious — Manual escalation required";
-  }
-
-  // Threshold escalation
-  if (netPayable > THRESHOLD) {
-    blockedReason =
-      "Amount exceeds ₹1,00,000 threshold — Level-2 Approval Required";
-  }
-
-  // =====================================================
   // ✅ Approve Handler (Simulation + Live Execution)
   // =====================================================
-  const handleApprove = () => {
+  const handleApprove = async () => {
     // 🚫 Block execution if risk issue exists
     if (blockedReason) {
       setStatus("⚠ Cannot execute settlement: " + blockedReason);
@@ -76,14 +55,14 @@ function Approval() {
     }
 
     // ✅ Live Mode Execution
-    localStorage.setItem("settlementStatus", "APPROVED");
+    localStorage.setItem(STORAGE_KEYS.SETTLEMENT_STATUS, "APPROVED");
 
     logEvent({
       event: `Settlement Approved by OpsManager for ${merchant.name}`,
       level: "CRITICAL",
     });
 
-    generateSettlementPDF(merchant, netPayable);
+    await generateSettlementPDF(merchant, netPayable);
 
     setStatus("✅ Settlement Approved & Executed Successfully!");
   };
@@ -92,7 +71,7 @@ function Approval() {
   // ❌ Reject Handler
   // =====================================================
   const handleReject = () => {
-    localStorage.setItem("settlementStatus", "REJECTED");
+    localStorage.setItem(STORAGE_KEYS.SETTLEMENT_STATUS, "REJECTED");
 
     logEvent({
       event: `Settlement Rejected — Workflow Stopped for ${merchant.name}`,
@@ -163,7 +142,9 @@ function Approval() {
         {/* PDF Download */}
         <button
           className="btn back"
-          onClick={() => generateSettlementPDF(merchant, netPayable)}
+          onClick={() => {
+            void generateSettlementPDF(merchant, netPayable);
+          }}
         >
           📄 Download Settlement Report
         </button>
