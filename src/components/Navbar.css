@@ -1,41 +1,49 @@
 .navbar {
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(10px);
-  padding: 16px 40px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E2E8F0;
+  padding: 12px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .logo {
-  color: #f8fafc;
-  font-size: 22px;
+  color: #1E293B;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
   margin: 0;
-  background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.02);
 }
 
 .nav-links {
   display: flex;
-  gap: 30px;
+  gap: 24px;
   align-items: center;
 }
 
 .nav-links a {
-  color: #cbd5e1;
+  color: #475569;
   text-decoration: none;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 14px;
   position: relative;
-  padding: 5px 0;
+  padding: 6px 0;
+  transition: color 0.2s ease;
 }
 
 .nav-links a::after {
@@ -43,15 +51,15 @@
   position: absolute;
   width: 0;
   height: 2px;
-  bottom: 0;
+  bottom: -2px;
   left: 0;
-  background-color: #3b82f6;
-  transition: width 0.3s ease;
-  border-radius: 2px;
+  background-color: #4F46E5;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1px;
 }
 
 .nav-links a:hover {
-  color: #ffffff;
+  color: #4F46E5;
 }
 
 .nav-links a:hover::after {

@@ -1,19 +1,49 @@
 .sim-box {
   margin-top: 20px;
-  padding: 15px;
-  background: #f1f7ff;
+  padding: 16px;
+  background: linear-gradient(135deg, #EFF6FF 0%, #F0F4FF 100%);
   border-radius: 12px;
-  border: 1px solid #0a2a66;
+  border: 1px solid #DDD6FE;
+}
+
+.sim-box h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E293B;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .sim-box label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-top: 10px;
-  font-weight: bold;
+  font-weight: 500;
+  color: #334155;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.sim-box label:hover {
+  color: #4F46E5;
+}
+
+.sim-box input[type="radio"] {
+  accent-color: #4F46E5;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
 }
 
 .sim-note {
   margin-top: 12px;
-  font-size: 13px;
-  color: gray;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #64748B;
+  background: #FFFFFF;
+  border-radius: 6px;
+  border-left: 3px solid #4F46E5;
 }

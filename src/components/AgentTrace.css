@@ -1,77 +1,119 @@
 .agent-trace {
-  background: white;
-  padding: 20px;
-  border-radius: 14px;
-  border: 1px solid #ddd;
-  box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
-  font-family: Arial;
+  background: #FFFFFF;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', sans-serif;
 }
 
 .agent-trace h3 {
-  margin-bottom: 15px;
-  font-size: 18px;
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1E293B;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .trace-section {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+}
+
+.trace-section:last-child {
+  margin-bottom: 0;
 }
 
 .trace-title {
-  font-weight: bold;
-  margin-bottom: 6px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #334155;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .trace-box {
-  background: #f8f9fa;
-  padding: 10px;
+  background: #F8FAFC;
+  padding: 12px;
   border-radius: 8px;
   font-style: italic;
+  color: #475569;
+  border-left: 3px solid #4F46E5;
+  font-size: 14px;
 }
 
 .trace-code {
-  background: #111827;
-  color: #00ff99;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 13px;
+  background: #0F172A;
+  color: #10B981;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 12px;
   overflow-x: auto;
+  font-family: 'Fira Code', monospace;
+  line-height: 1.6;
+  border: 1px solid #1E293B;
+}
+
+.trace-code::-webkit-scrollbar {
+  height: 6px;
+}
+
+.trace-code::-webkit-scrollbar-track {
+  background: #1E293B;
+}
+
+.trace-code::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
 }
 
 .trace-steps {
-  padding-left: 18px;
-  line-height: 1.7;
+  padding-left: 20px;
+  line-height: 1.8;
+}
+
+.trace-steps li {
+  color: #334155;
+  font-size: 14px;
+  margin-bottom: 8px;
 }
 
 .trace-steps span {
   font-size: 12px;
-  color: gray;
+  color: #94A3B8;
+  font-weight: 500;
 }
 
 .critical {
-  color: red;
-  font-weight: bold;
+  color: #DC2626;
+  font-weight: 600;
 }
 
 .waiting {
-  padding: 10px;
-  background: #fff3cd;
+  padding: 12px;
+  background: #FEF3C7;
   border-radius: 8px;
-  font-weight: bold;
-  color: #856404;
+  font-weight: 600;
+  color: #92400E;
+  border-left: 3px solid #F59E0B;
 }
 
 .approved {
-  padding: 10px;
-  background: #d4edda;
+  padding: 12px;
+  background: #DCFCE7;
   border-radius: 8px;
-  font-weight: bold;
-  color: #155724;
+  font-weight: 600;
+  color: #166534;
+  border-left: 3px solid #10B981;
 }
 
 .rejected {
-  padding: 10px;
-  background: #f8d7da;
+  padding: 12px;
+  background: #FEE2E2;
   border-radius: 8px;
-  font-weight: bold;
-  color: #721c24;
+  font-weight: 600;
+  color: #991B1B;
+  border-left: 3px solid #DC2626;
 }

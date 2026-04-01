@@ -31,6 +31,7 @@ function normalizeBillResults(storedResults) {
 function Merchants() {
   const { merchantsList, deleteMerchant } = useMerchants();
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const [uploadErrorById, setUploadErrorById] = useState({});
   const [activeUploadMerchantId, setActiveUploadMerchantId] = useState("");
   const [auditResultById, setAuditResultById] = useState(
@@ -109,6 +110,7 @@ function Merchants() {
     });
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleDeleteBill = (merchantId, billId) => {
     setAuditResultById((prev) => {
       const remainingBills = (prev[merchantId] || []).filter((bill) => bill.id !== billId);

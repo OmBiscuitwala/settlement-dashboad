@@ -1,52 +1,105 @@
 .overlay-container {
   position: fixed;
-  bottom: 25px;
-  right: 25px;
+  bottom: 28px;
+  right: 28px;
   z-index: 999;
 }
 
 .overlay-btn {
-  background: #0a2a66;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
   color: white;
-  padding: 14px 18px;
+  padding: 12px 20px;
   border-radius: 50px;
   border: none;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.overlay-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.5);
 }
 
 .overlay-box {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
   margin-top: 12px;
-  width: 280px;
-  background: white;
-  border: 1px solid #0a2a66;
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+  width: 320px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .overlay-box textarea {
   width: 100%;
-  height: 70px;
-  border-radius: 10px;
-  padding: 8px;
+  height: 80px;
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #E2E8F0;
+  font-family: inherit;
+  font-size: 14px;
   resize: none;
+  transition: border-color 0.2s ease;
+}
+
+.overlay-box textarea:focus {
+  border-color: #4F46E5;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 .run-btn {
-  margin-top: 10px;
+  margin-top: 12px;
   width: 100%;
-  padding: 10px;
-  background: green;
+  padding: 12px;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.run-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.run-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .error {
-  margin-top: 10px;
-  color: red;
-  font-weight: bold;
+  margin-top: 12px;
+  padding: 10px;
+  color: #DC2626;
+  font-weight: 500;
   font-size: 13px;
+  background: #FEE2E2;
+  border-radius: 6px;
+  border-left: 3px solid #DC2626;
 }

@@ -25,7 +25,7 @@ function Home() {
         setError("");
 
         if (!query.trim()) {
-            setError("⚠ Please enter an instruction.");
+            setError("? Please enter an instruction.");
             return;
         }
 
@@ -36,7 +36,7 @@ function Home() {
         const merchant = merchantMatch?.merchant;
 
         if (!merchant) {
-            setError("❌ Merchant not found in instruction.");
+            setError("? Merchant not found in instruction.");
             return;
         }
 
@@ -48,12 +48,12 @@ function Home() {
             merchantName: merchant.name,
             netPayable,
             steps: [
-                "Intent Parsed ✅",
-                "Merchant Identified ✅",
-                "Transactions Loaded ✅",
-                "Net Payable Computed ✅",
-                "Risk Flagged: CRITICAL ⚠",
-                "Approval Required ⏸",
+                "Intent Parsed ?",
+                "Merchant Identified ?",
+                "Transactions Loaded ?",
+                "Net Payable Computed ?",
+                "Risk Flagged: CRITICAL ?",
+                "Approval Required ?",
             ],
         };
 
@@ -67,103 +67,122 @@ function Home() {
     };
 
     return (
-        <div className="bg-main-bg text-slate-900 font-display min-h-screen">
-            <div className="relative flex h-screen w-full flex-col group/design-root overflow-hidden">
-                <div className="flex flex-1 overflow-hidden">
-                    <main className="flex-1 overflow-y-auto bg-main-bg p-8 lg:p-12">
-                        <div className="max-w-4xl mx-auto flex flex-col gap-8">
-                            <div className="flex flex-col gap-2">
-                                <h1 className="text-slate-900 text-4xl font-black leading-tight tracking-[-0.033em]">Command Center</h1>
-                                <p className="text-slate-500 text-base font-normal leading-normal">Overview of your settlement operations and quick actions.</p>
-                            </div>
-
-                            <form onSubmit={handleSearch} className="relative group">
-                                <div className="relative flex items-center bg-white rounded-xl border border-primary/20 p-2 shadow-[0_0_15px_rgba(79,70,229,0.1)] hover:shadow-[0_0_20px_rgba(79,70,229,0.15)] transition-shadow duration-300 @container">
-                                    <div className="pl-4 text-primary">
-                                        <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>magic_button</span>
-                                    </div>
-                                    <input
-                                        className="w-full bg-transparent border-none text-slate-900 px-4 py-3 focus:ring-2 focus:ring-primary focus:ring-offset-0 outline-none placeholder:text-slate-400 text-lg font-medium transition-all"
-                                        placeholder="Find merchants with high risk..."
-                                        type="text"
-                                        value={query}
-                                        onChange={(e) => setQuery(e.target.value)}
-                                    />
-                                    <div className="flex items-center gap-2 pr-2">
-                                        <button type="button" className="p-2 text-slate-400 hover:text-primary transition-colors rounded-lg hover:bg-slate-50">
-                                            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>mic</span>
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            disabled={!query.trim()}
-                                            className="px-6 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed hidden @[480px]:block"
-                                        >
-                                            Send
-                                        </button>
-                                    </div>
-                                </div>
-                                {error && <p className="text-red-500 text-sm mt-3 ml-2 font-medium bg-red-50 px-3 py-1.5 rounded-md self-start border border-red-100">{error}</p>}
-                            </form>
-
-                            <div className="flex flex-col gap-4 mt-4">
-                                <h2 className="text-slate-900 text-xl font-bold leading-tight tracking-[-0.015em]">Quick Actions</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <button
-                                        onClick={() => navigate('/merchants')}
-                                        className="flex flex-col items-start gap-4 p-6 rounded-xl border border-slate-200 bg-white hover:border-primary/40 transition-all hover:shadow-md hover:shadow-primary/5 text-left group"
-                                    >
-                                        <div className="p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                                            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>storefront</span>
-                                        </div>
-                                        <div>
-                                            <h3 className="text-slate-900 font-semibold text-lg">View Merchants</h3>
-                                            <p className="text-slate-500 text-sm mt-1">Manage and monitor active merchant accounts.</p>
-                                        </div>
-                                    </button>
-
-                                    <button
-                                        onClick={() => navigate('/logs')}
-                                        className="flex flex-col items-start gap-4 p-6 rounded-xl border border-slate-200 bg-white hover:border-warning/40 transition-all hover:shadow-md hover:shadow-warning/5 text-left group"
-                                    >
-                                        <div className="p-3 rounded-lg bg-warning/10 text-warning group-hover:bg-warning group-hover:text-white transition-colors">
-                                            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>history</span>
-                                        </div>
-                                        <div>
-                                            <h3 className="text-slate-900 font-semibold text-lg">View Audit Logs</h3>
-                                            <p className="text-slate-500 text-sm mt-1">Review system changes and transaction history.</p>
-                                        </div>
-                                    </button>
-
-                                    <button
-                                        onClick={() => navigate('/agent')}
-                                        className="flex flex-col items-start gap-4 p-6 rounded-xl border border-slate-200 bg-white hover:border-primary/40 transition-all hover:shadow-md hover:shadow-primary/5 text-left group relative overflow-hidden"
-                                    >
-                                        <div className="p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors relative z-10">
-                                            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>smart_toy</span>
-                                        </div>
-                                        <div className="relative z-10">
-                                            <h3 className="text-slate-900 font-semibold text-lg">AI Agent Console</h3>
-                                            <p className="text-slate-500 text-sm mt-1">Configure automated settlement workflows.</p>
-                                        </div>
-                                    </button>
-
-                                    <button
-                                        onClick={() => navigate('/add-merchant')}
-                                        className="flex flex-col items-start gap-4 p-6 rounded-xl border border-slate-200 bg-white hover:border-success/40 transition-all hover:shadow-md hover:shadow-success/5 text-left group"
-                                    >
-                                        <div className="p-3 rounded-lg bg-success/10 text-success group-hover:bg-success group-hover:text-white transition-colors">
-                                            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>person_add</span>
-                                        </div>
-                                        <div>
-                                            <h3 className="text-slate-900 font-semibold text-lg">Add Merchant</h3>
-                                            <p className="text-slate-500 text-sm mt-1">Onboard a new merchant to the platform.</p>
-                                        </div>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </main>
+        <div className="bg-bg-main text-slate-900 font-display min-h-screen">
+            <div className="relative min-h-[calc(100vh-60px)] w-full overflow-hidden flex flex-col">
+                <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute top-0 right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-60"></div>
+                    <div className="absolute bottom-20 left-0 w-72 h-72 bg-purple-300/10 rounded-full blur-3xl opacity-60"></div>
+                    <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-blue-300/5 rounded-full blur-3xl"></div>
                 </div>
+
+                <main className="relative z-10 flex-1 overflow-y-auto p-6 md:p-12">
+                    <div className="max-w-5xl mx-auto flex flex-col gap-12">
+                        <div className="flex flex-col gap-4 pt-8">
+                            <div className="inline-flex items-center gap-2 w-fit px-3 py-1.5 bg-primary/10 rounded-full border border-primary/20">
+                                <span className="material-symbols-outlined text-sm text-primary">auto_awesome</span>
+                                <span className="text-xs font-semibold text-primary uppercase tracking-wide">AI-Powered</span>
+                            </div>
+                            <h1 className="text-5xl md:text-7xl font-black leading-none tracking-tighter">
+                                <span className="text-slate-900">Merchant</span>
+                                <br />
+                                <span className="text-gradient">Settlement</span>
+                                <br />
+                                <span className="text-slate-900">Control</span>
+                            </h1>
+                            <p className="text-lg md:text-xl text-slate-600 max-w-3xl leading-relaxed font-medium">
+                                Automate complex settlement operations with intelligent AI agents. Analyze merchants, calculate payables, and approve transactions in seconds.
+                            </p>
+                        </div>
+
+                        <form onSubmit={handleSearch} className="relative group w-full">
+                            <div className="relative flex items-center bg-white rounded-2xl border border-slate-200 p-3 shadow-xl hover:shadow-2xl transition-all duration-300 glow-primary @container">
+                                <div className="pl-4 text-primary opacity-60">
+                                    <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>magic_button</span>
+                                </div>
+                                <input
+                                    className="w-full bg-transparent border-none text-slate-900 px-4 py-4 focus:outline-none placeholder:text-slate-400 text-base font-medium transition-all"
+                                    placeholder="Example: 'Settle Merchant ABC Store' or 'Find high-risk merchants'..."
+                                    type="text"
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                />
+                                <div className="flex items-center gap-2 pr-2">
+                                    <button type="button" className="p-2 text-slate-400 hover:text-primary transition-colors rounded-lg hover:bg-slate-50">
+                                        <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>mic</span>
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={!query.trim()}
+                                        className="px-6 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 hidden @[540px]:flex"
+                                    >
+                                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>send</span>
+                                        Run
+                                    </button>
+                                </div>
+                            </div>
+                            {error && (
+                                <div className="mt-4 flex gap-3 items-start px-4 py-3 bg-danger/10 rounded-lg border border-danger/30 animate-slideUp">
+                                    <span className="material-symbols-outlined text-danger flex-shrink-0 mt-0.5" style={{ fontSize: '20px' }}>error_outline</span>
+                                    <p className="text-danger font-medium text-sm">{error}</p>
+                                </div>
+                            )}
+                        </form>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-12">
+                            <button
+                                onClick={() => navigate('/merchants')}
+                                className="group flex flex-col items-start gap-4 p-6 bg-white rounded-xl border border-slate-200 hover:border-primary/40 hover:shadow-lg transition-all duration-300 text-left"
+                            >
+                                <div className="p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                                    <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>storefront</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-slate-900 font-semibold text-lg">View Merchants</h3>
+                                    <p className="text-slate-500 text-sm mt-1">Manage and monitor all active merchant accounts</p>
+                                </div>
+                            </button>
+
+                            <button
+                                onClick={() => navigate('/ledger')}
+                                className="group flex flex-col items-start gap-4 p-6 bg-white rounded-xl border border-slate-200 hover:border-warning/40 hover:shadow-lg transition-all duration-300 text-left"
+                            >
+                                <div className="p-3 rounded-lg bg-warning/10 text-warning group-hover:bg-warning group-hover:text-white transition-colors">
+                                    <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>timeline</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-slate-900 font-semibold text-lg">View Audit Logs</h3>
+                                    <p className="text-slate-500 text-sm mt-1">Review system changes and transaction history</p>
+                                </div>
+                            </button>
+
+                            <button
+                                onClick={() => navigate('/agent')}
+                                className="group flex flex-col items-start gap-4 p-6 bg-white rounded-xl border border-slate-200 hover:border-primary/40 hover:shadow-lg transition-all duration-300 text-left"
+                            >
+                                <div className="p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                                    <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>smart_toy</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-slate-900 font-semibold text-lg">AI Agent Console</h3>
+                                    <p className="text-slate-500 text-sm mt-1">Manage automated settlement workflows</p>
+                                </div>
+                            </button>
+
+                            <button
+                                onClick={() => navigate('/add-merchant')}
+                                className="group flex flex-col items-start gap-4 p-6 bg-white rounded-xl border border-slate-200 hover:border-success/40 hover:shadow-lg transition-all duration-300 text-left"
+                            >
+                                <div className="p-3 rounded-lg bg-success/10 text-success group-hover:bg-success group-hover:text-white transition-colors">
+                                    <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>person_add</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-slate-900 font-semibold text-lg">Add Merchant</h3>
+                                    <p className="text-slate-500 text-sm mt-1">Onboard a new merchant to the platform</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </main>
             </div>
         </div>
     );
