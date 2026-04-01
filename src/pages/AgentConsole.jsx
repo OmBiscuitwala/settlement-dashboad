@@ -11,8 +11,14 @@ function AgentConsole() {
   if (!result) {
     return (
       <div className="bg-background-light font-display text-slate-900 min-h-screen flex flex-col items-center justify-center">
-        <h2 className="text-2xl font-bold">No Agent Execution Found</h2>
-        <button onClick={() => navigate("/")} className="mt-4 px-4 py-2 bg-primary text-white rounded shadow">Return Home</button>
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="bg-indigo-50 p-4 rounded-xl">
+            <span className="material-symbols-outlined text-4xl text-primary">smart_toy</span>
+          </div>
+          <h2 className="text-2xl font-bold">No Agent Execution Found</h2>
+          <p className="text-slate-500 max-w-sm">Start by searching for a merchant in the Command Center to trigger an AI agent workflow.</p>
+          <button onClick={() => navigate("/")} className="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">Return to Command Center</button>
+        </div>
       </div>
     );
   }

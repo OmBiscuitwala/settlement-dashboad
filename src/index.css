@@ -41,3 +41,18 @@ button {
   transition: all 0.3s ease;
   text-decoration: none;
 }
+
+/* Keyboard focus indicators for accessibility */
+button:focus-visible,
+input:focus-visible,
+a:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
+}
+
+/* Remove focus outline for mouse users using :focus-visible */
+:is(button, input, a, select, textarea):focus:not(:focus-visible) {
+  outline: none;
+}

@@ -129,7 +129,9 @@ function AddMerchant() {
                             value={formData.name}
                             onChange={handleChange}
                             placeholder="e.g. ABC Tech Solutions"
-                            className={errors.name ? 'error-input' : ''}
+                            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                                errors.name ? 'border-red-500 bg-red-50' : 'border-slate-300 focus:ring-primary'
+                            }`}
                         />
                         {errors.name && <span className="error-text">{errors.name}</span>}
                     </div>
@@ -145,7 +147,9 @@ function AddMerchant() {
                                 onChange={handleChange}
                                 placeholder="e.g. *********1234"
                                 maxLength={showBank ? "19" : "30"}
-                                className={errors.bank ? 'error-input' : ''}
+                                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                                    errors.bank ? 'border-red-500 bg-red-50' : 'border-slate-300 focus:ring-primary'
+                                }`}
                             />
                             <button
                                 type="button"
@@ -170,6 +174,7 @@ function AddMerchant() {
                             placeholder="Optional"
                             min="0"
                             step="0.01"
+                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         />
                     </div>
 

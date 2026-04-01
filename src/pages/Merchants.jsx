@@ -164,49 +164,66 @@ function Merchants() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-                        {hasMerchants ? merchantsList.map((merchant) => (
-                          <tr key={merchant.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
-                            <td className="px-6 py-4">
-                              <div className="flex items-center gap-3">
-                                <div className="size-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                                  {merchant.name.substring(0, 2).toUpperCase()}
+                        {hasMerchants ? (
+                          merchantsList.map((merchant) => (
+                            <tr key={merchant.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="size-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                                    {merchant.name.substring(0, 2).toUpperCase()}
+                                  </div>
+                                  <Link to={`/merchant/${merchant.id}`}>
+                                    <div className="text-slate-900 dark:text-white text-sm font-medium hover:text-primary transition-colors">{merchant.name}</div>
+                                  </Link>
                                 </div>
-                                <Link to={`/merchant/${merchant.id}`}>
-                                  <div className="text-slate-900 dark:text-white text-sm font-medium hover:text-primary transition-colors">{merchant.name}</div>
-                                </Link>
+                              </td>
+                              <td className="px-6 py-4 text-slate-600 dark:text-slate-300 text-sm font-mono">{merchant.id}</td>
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-2">
+                                  <span className="material-symbols-outlined text-[16px] text-slate-400">account_balance</span>
+                                  <span className="text-slate-600 dark:text-slate-300 text-sm">{merchant.bank}</span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 text-slate-900 dark:text-white text-sm font-medium">₹{getPreviousOutstandingFromProfit(merchant)}</td>
+                              <td className="px-6 py-4 text-right">
+                                <label htmlFor={`bill-${merchant.id}`} className="cursor-pointer text-slate-400 hover:text-primary transition-colors mr-3" title="Upload Bill">
+                                  <span className="material-symbols-outlined text-[20px]">upload_file</span>
+                                  <input
+                                    id={`bill-${merchant.id}`}
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
+                                    disabled={activeUploadMerchantId === merchant.id}
+                                    onChange={(event) => {
+                                      const selected = event.target.files?.[0];
+                                      void handleBillUpload(merchant, selected);
+                                      event.target.value = "";
+                                    }}
+                                  />
+                                </label>
+                                <button onClick={() => handleDeleteMerchant(merchant.id)} className="text-slate-400 hover:text-red-500 transition-colors" title="Delete Merchant">
+                                  <span className="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="5" className="px-6 py-16 text-center">
+                              <div className="flex flex-col items-center gap-3">
+                                <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-xl">
+                                  <span className="material-symbols-outlined text-4xl text-slate-400">storefront</span>
+                                </div>
+                                <div>
+                                  <h3 className="text-slate-900 dark:text-white font-semibold mb-1">No Merchants Yet</h3>
+                                  <p className="text-slate-500 dark:text-slate-400 text-sm">Get started by adding a new merchant to the system.</p>
+                                </div>
+                                <button onClick={() => navigate('/add-merchant')} className="mt-4 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium">
+                                  Add First Merchant
+                                </button>
                               </div>
-                            </td>
-                            <td className="px-6 py-4 text-slate-600 dark:text-slate-300 text-sm font-mono">{merchant.id}</td>
-                            <td className="px-6 py-4">
-                              <div className="flex items-center gap-2">
-                                <span className="material-symbols-outlined text-[16px] text-slate-400">account_balance</span>
-                                <span className="text-slate-600 dark:text-slate-300 text-sm">{merchant.bank}</span>
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 text-slate-900 dark:text-white text-sm font-medium">₹{getPreviousOutstandingFromProfit(merchant)}</td>
-                            <td className="px-6 py-4 text-right">
-                              <label htmlFor={`bill-${merchant.id}`} className="cursor-pointer text-slate-400 hover:text-primary transition-colors mr-3" title="Upload Bill">
-                                <span className="material-symbols-outlined text-[20px]">upload_file</span>
-                                <input
-                                  id={`bill-${merchant.id}`}
-                                  type="file"
-                                  accept="image/*"
-                                  className="hidden"
-                                  disabled={activeUploadMerchantId === merchant.id}
-                                  onChange={(event) => {
-                                    const selected = event.target.files?.[0];
-                                    void handleBillUpload(merchant, selected);
-                                    event.target.value = "";
-                                  }}
-                                />
-                              </label>
-                              <button onClick={() => handleDeleteMerchant(merchant.id)} className="text-slate-400 hover:text-red-500 transition-colors" title="Delete Merchant">
-                                <span className="material-symbols-outlined text-[20px]">delete</span>
-                              </button>
                             </td>
                           </tr>
-                        )) : (
-                          <tr><td colSpan="5" className="px-6 py-4 text-center text-slate-500">No merchants found.</td></tr>
                         )}
                       </tbody>
                     </table>

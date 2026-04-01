@@ -83,7 +83,7 @@ function Home() {
                                         <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>magic_button</span>
                                     </div>
                                     <input
-                                        className="w-full bg-transparent border-none text-slate-900 px-4 py-3 focus:ring-0 outline-none placeholder:text-slate-400 text-lg font-medium"
+                                        className="w-full bg-transparent border-none text-slate-900 px-4 py-3 focus:ring-2 focus:ring-primary focus:ring-offset-0 outline-none placeholder:text-slate-400 text-lg font-medium transition-all"
                                         placeholder="Find merchants with high risk..."
                                         type="text"
                                         value={query}

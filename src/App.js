@@ -51,7 +51,7 @@ function App() {
         <TopBanner />
 
         {/* ✅ Routes */}
-        <Suspense fallback={<div style={{ padding: "20px" }}>Loading...</div>}>
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-pulse flex items-center gap-3"><div className="w-3 h-3 rounded-full bg-primary animate-bounce"></div><span className="text-slate-600 font-medium">Loading...</span></div></div>}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/merchants" element={<Merchants />} />
