@@ -193,7 +193,7 @@ function Merchants() {
                                   <input
                                     id={`bill-${merchant.id}`}
                                     type="file"
-                                    accept="image/*"
+                                    accept="image/*,application/pdf"
                                     className="hidden"
                                     disabled={activeUploadMerchantId === merchant.id}
                                     onChange={(event) => {
@@ -268,47 +268,49 @@ function Merchants() {
                         )}
                       </div>
 
-                      <div className="flex-1 flex overflow-hidden">
-                        {latestAuditResult ? (
-                          <>
-                            <div className="w-1/2 p-5 border-r border-slate-200 dark:border-slate-800 flex flex-col gap-5 overflow-y-auto bg-slate-50 h-full">
-                              <div>
-                                <div className="flex justify-between text-sm mb-1.5">
-                                  <span className="text-slate-600 dark:text-slate-400">Merchant Status</span>
-                                  <span className="text-slate-900 dark:text-white font-medium">{latestAuditResult.merchant_status}</span>
+                            <div className="flex-1 flex overflow-hidden">
+                              {latestAuditResult ? (
+                                <>
+                                  <div className="w-1/2 p-5 border-r border-slate-200 dark:border-slate-800 flex flex-col gap-5 overflow-y-auto bg-slate-50 h-full">
+                                    <div>
+                                      <div className="flex justify-between text-sm mb-1.5">
+                                        <span className="text-slate-600 dark:text-slate-400">Verification</span>
+                                        <span className={`font-medium ${latestAuditResult.is_verification_passed ? 'text-emerald-600' : 'text-red-500'}`}>
+                                          {latestAuditResult.is_verification_passed ? '✅ Passed' : '❌ Failed'}
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div className="flex justify-between text-sm mb-1.5">
+                                        <span className="text-slate-600 dark:text-slate-400">Extracted Bill Total</span>
+                                        <span className="text-slate-900 dark:text-white font-medium">₹{latestAuditResult.extracted_bill_total?.toFixed(2) ?? "0.00"}</span>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div className="flex justify-between text-sm mb-1.5">
+                                        <span className="text-slate-600 dark:text-slate-400">New Outstanding Total</span>
+                                        <span className="text-slate-900 dark:text-white font-medium">₹{latestAuditResult.new_outstanding_total?.toFixed(2) ?? "0.00"}</span>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div className="flex justify-between text-sm mb-1.5">
+                                        <span className="text-slate-600 dark:text-slate-400">OCR Confidence</span>
+                                      </div>
+                                      <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-1.5">
+                                        <div className="bg-primary h-1.5 rounded-full" style={{ width: `${latestAuditResult.ocr_confidence}%` }}></div>
+                                      </div>
+                                      <div className="text-right mt-1 text-xs text-slate-500">{latestAuditResult.ocr_confidence}% confidence</div>
+                                    </div>
+                                  </div>
+                                  <div className="w-1/2 bg-white dark:bg-[#0d0914] overflow-y-auto font-mono text-xs p-5 text-slate-600 dark:text-slate-400">
+                                    <pre><code>{JSON.stringify(latestAuditResult, null, 2)}</code></pre>
+                                  </div>
+                                </>
+                              ) : (
+                                <div className="flex-1 flex items-center justify-center p-8 text-slate-500">
+                                  Upload a bill using the table above to see audit results here.
                                 </div>
-                              </div>
-                              <div>
-                                <div className="flex justify-between text-sm mb-1.5">
-                                  <span className="text-slate-600 dark:text-slate-400">Total Profit Calc</span>
-                                  <span className="text-slate-900 dark:text-white font-medium">₹{latestAuditResult.total_profit?.toFixed(2) || "0.00"}</span>
-                                </div>
-                              </div>
-                              <div>
-                                <div className="flex justify-between text-sm mb-1.5">
-                                  <span className="text-slate-600 dark:text-slate-400">Total Expenses Calc</span>
-                                  <span className="text-slate-900 dark:text-white font-medium">₹{latestAuditResult.total_expenses?.toFixed(2) || "0.00"}</span>
-                                </div>
-                              </div>
-                              <div>
-                                <div className="flex justify-between text-sm mb-1.5">
-                                  <span className="text-slate-600 dark:text-slate-400">OCR Confidence</span>
-                                </div>
-                                <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-1.5">
-                                  <div className="bg-primary h-1.5 rounded-full" style={{ width: `${latestAuditResult.ocr_confidence}%` }}></div>
-                                </div>
-                                <div className="text-right mt-1 text-xs text-slate-500">{latestAuditResult.ocr_confidence}% confidence</div>
-                              </div>
-                            </div>
-                            <div className="w-1/2 bg-white dark:bg-[#0d0914] overflow-y-auto font-mono text-xs p-5 text-slate-600 dark:text-slate-400">
-                              <pre><code>{JSON.stringify(latestAuditResult, null, 2)}</code></pre>
-                            </div>
-                          </>
-                        ) : (
-                          <div className="flex-1 flex items-center justify-center p-8 text-slate-500">
-                            Upload a bill using the table above to see audit results here.
-                          </div>
-                        )}
+                              )}
                       </div>
                     </div>
                   </div>

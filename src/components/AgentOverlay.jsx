@@ -1,10 +1,10 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { merchants } from "../data";
+import { useMerchants } from "../context/MerchantContext";
 import { logEvent } from "../audit";
-import { calculateSettlement } from "../utils/settlement";
 import { STORAGE_KEYS } from "../utils/storage";
+import { runSettlementWorkflow } from "../utils/agentEngine";
 
 import "./AgentOverlay.css";
 
@@ -12,17 +12,11 @@ function AgentOverlay() {
   const [open, setOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [error, setError] = useState("");
+  const [running, setRunning] = useState(false);
+  const [liveSteps, setLiveSteps] = useState([]);
 
   const navigate = useNavigate();
-  const normalizedPrompt = prompt.toLowerCase();
-  const merchantLookup = useMemo(
-    () =>
-      merchants.map((merchant) => ({
-        merchant,
-        normalizedName: merchant.name.toLowerCase(),
-      })),
-    []
-  );
+  const { merchantsList } = useMerchants();
 
   useEffect(() => {
     const handleOpenAgent = (e) => {
@@ -35,59 +29,55 @@ function AgentOverlay() {
     return () => window.removeEventListener("OPEN_AGENT", handleOpenAgent);
   }, []);
 
-  // ✅ Run Instruction Like Real Bank Copilot
-  const handleSubmit = () => {
+  // Detect simulation mode from localStorage (set by SimulationToggle)
+  const getMode = () =>
+    localStorage.getItem("simulationMode") === "SHADOW" ? "SHADOW" : "LIVE";
+
+  // ✅ Run Instruction via rule-based agent pipeline
+  const handleSubmit = async () => {
     setError("");
+    setLiveSteps([]);
 
     if (!prompt.trim()) {
       setError("⚠ Please enter an instruction.");
       return;
     }
 
-    // ✅ Intent Parser (simple prototype)
-    const merchantMatch = merchantLookup.find(({ normalizedName }) =>
-      normalizedPrompt.includes(normalizedName)
-    );
-    const merchant = merchantMatch?.merchant;
+    setRunning(true);
 
-    if (!merchant) {
-      setError("❌ Merchant not found in instruction.");
-      return;
+    try {
+      const agentResult = await runSettlementWorkflow(
+        prompt,
+        merchantsList,
+        getMode(),
+        (step) => setLiveSteps((prev) => [...prev, step])
+      );
+
+      if (agentResult.error) {
+        setError(agentResult.error);
+        setRunning(false);
+        return;
+      }
+
+      // ✅ Store agent output for AgentConsole / Approval page
+      localStorage.setItem(
+        STORAGE_KEYS.AGENT_RESULT,
+        JSON.stringify(agentResult)
+      );
+
+      // ✅ Compliance Audit Log (in-memory + IndexedDB via logEvent)
+      logEvent({
+        event: `Agent prepared settlement draft for ${agentResult.merchantName}`,
+        level: "MEDIUM",
+      });
+
+      setOpen(false);
+      navigate(`/approval/${agentResult.merchantId}`);
+    } catch (err) {
+      setError("❌ Agent workflow failed: " + err.message);
+    } finally {
+      setRunning(false);
     }
-
-    // ✅ Settlement Calculation
-    const { netPayable } = calculateSettlement(merchant.transactions);
-
-    // ✅ Agent Execution Trace Output
-    const agentResult = {
-      prompt,
-      merchantId: merchant.id,
-      merchantName: merchant.name,
-      netPayable,
-      steps: [
-        "Intent Parsed ✅",
-        "Merchant Identified ✅",
-        "Transactions Loaded ✅",
-        "Net Payable Computed ✅",
-        "Risk Flagged: CRITICAL ⚠",
-        "Approval Required ⏸",
-      ],
-    };
-
-    // ✅ Store agent output for Approval Page
-    localStorage.setItem(STORAGE_KEYS.AGENT_RESULT, JSON.stringify(agentResult));
-
-    // ✅ Compliance Audit Log
-    logEvent({
-      event: `Agent prepared settlement draft for ${merchant.name}`,
-      level: "MEDIUM",
-    });
-
-    // ✅ Close overlay
-    setOpen(false);
-
-    // ✅ DIRECT AUTO JUMP TO APPROVAL PAGE
-    navigate(`/approval/${merchant.id}`);
   };
 
   return (
@@ -106,11 +96,24 @@ function AgentOverlay() {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Example: Settle Merchant ABC for last week"
+            disabled={running}
           />
 
-          <button className="run-btn" onClick={handleSubmit}>
-            Run Instruction →
+          <button
+            className="run-btn"
+            onClick={handleSubmit}
+            disabled={running}
+          >
+            {running ? "Running…" : "Run Instruction →"}
           </button>
+
+          {liveSteps.length > 0 && (
+            <ul className="agent-live-steps">
+              {liveSteps.map((step, i) => (
+                <li key={i}>{step}</li>
+              ))}
+            </ul>
+          )}
 
           {error && <p className="error">{error}</p>}
         </div>

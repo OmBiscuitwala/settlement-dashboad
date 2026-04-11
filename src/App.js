@@ -12,6 +12,7 @@ const loadApproval = () => import("./pages/Approval");
 const loadAgentConsole = () => import("./pages/AgentConsole");
 const loadAuditLedger = () => import("./pages/AuditLedger");
 const loadAddMerchant = () => import("./pages/AddMerchant");
+const loadBills = () => import("./pages/Bills");
 
 const Home = lazy(loadHome);
 const Merchants = lazy(loadMerchants);
@@ -20,6 +21,7 @@ const Approval = lazy(loadApproval);
 const AgentConsole = lazy(loadAgentConsole);
 const AuditLedger = lazy(loadAuditLedger);
 const AddMerchant = lazy(loadAddMerchant);
+const Bills = lazy(loadBills);
 
 function App() {
   useEffect(() => {
@@ -30,6 +32,7 @@ function App() {
       void loadApproval();
       void loadAgentConsole();
       void loadAuditLedger();
+      void loadBills();
     };
 
     if ("requestIdleCallback" in window) {
@@ -61,6 +64,7 @@ function App() {
             <Route path="/ledger" element={<AuditLedger />} />
             <Route path="/logs" element={<AuditLedger />} />
             <Route path="/add-merchant" element={<AddMerchant />} />
+            <Route path="/bills" element={<Bills />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
