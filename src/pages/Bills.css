@@ -1,0 +1,140 @@
+.bills-page {
+  background: var(--bg-light, #f8fafc);
+  min-height: 100vh;
+  padding: 32px 24px;
+  font-family: var(--font-display, 'Inter', sans-serif);
+}
+
+.bills-page h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 24px;
+}
+
+.bills-table-wrap {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+
+.bills-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bills-table thead {
+  background: #f1f5f9;
+}
+
+.bills-table th,
+.bills-table td {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.bills-table th {
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: .05em;
+}
+
+.bills-table tbody tr {
+  border-top: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.bills-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.badge-PENDING    { background:#f1f5f9; color:#64748b; }
+.badge-AUDITED    { background:#dcfce7; color:#16a34a; }
+.badge-FLAGGED    { background:#fee2e2; color:#dc2626; }
+.badge-PROCESSING { background:#fef3c7; color:#d97706; }
+
+/* Expanded row */
+.bill-expanded {
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  padding: 20px 24px;
+}
+
+.bill-expanded-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .bill-expanded-grid { grid-template-columns: 1fr; }
+}
+
+.bill-expanded h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 8px;
+}
+
+.ocr-text {
+  white-space: pre-wrap;
+  font-family: monospace;
+  font-size: 12px;
+  background: #0f172a;
+  color: #94a3b8;
+  border-radius: 8px;
+  padding: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.file-preview {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  object-fit: contain;
+}
+
+.re-audit-btn {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.re-audit-btn:hover { background: #4338ca; }
+.re-audit-btn:disabled { opacity:.6; cursor:not-allowed; }
+
+.empty-bills {
+  padding: 60px 20px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 15px;
+}

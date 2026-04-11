@@ -1,12 +1,14 @@
 import AgentOverlay from "../components/AgentOverlay";
+import BillUploader from "../components/BillUploader";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import { useMerchants } from "../context/MerchantContext";
 import AgentTrace from "../components/AgentTrace";
 import { calculateSettlement } from "../utils/settlement";
 import { STORAGE_KEYS } from "../utils/storage";
+import { getBillsByMerchant } from "../utils/billDatabase";
 
 import "./MerchantDetails.css";
 
@@ -22,6 +24,18 @@ function MerchantDetails() {
     () => calculateSettlement(merchant?.transactions),
     [merchant]
   );
+
+  const [billCount, setBillCount] = useState(0);
+
+  const refreshBillCount = useCallback(async () => {
+    if (!id) return;
+    const bills = await getBillsByMerchant(id);
+    setBillCount(bills.length);
+  }, [id]);
+
+  useEffect(() => {
+    refreshBillCount();
+  }, [refreshBillCount]);
 
   if (!merchant) {
     return (
@@ -106,6 +120,27 @@ function MerchantDetails() {
         <Link to={`/approval/${merchant.id}`}>
           <button className="btn green">Proceed to Approval →</button>
         </Link>
+
+        {/* Bill Upload Section */}
+        <div style={{ marginTop: "32px", borderTop: "1px solid #e2e8f0", paddingTop: "24px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
+            <h3 style={{ margin: 0 }}>Uploaded Bills</h3>
+            <span style={{
+              background: "#e0e7ff",
+              color: "#4f46e5",
+              borderRadius: "9999px",
+              padding: "2px 10px",
+              fontSize: "13px",
+              fontWeight: 700,
+            }}>
+              {billCount} on record
+            </span>
+          </div>
+          <BillUploader
+            merchantId={merchant.id}
+            onExtract={refreshBillCount}
+          />
+        </div>
       </div>
 
       {/* RIGHT COLUMN */}
