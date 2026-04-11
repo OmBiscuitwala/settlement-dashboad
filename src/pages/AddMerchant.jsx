@@ -12,7 +12,6 @@ function AddMerchant() {
     const [formData, setFormData] = useState({
         name: '',
         bank: '',
-        initialTransaction: ''
     });
 
     const [errors, setErrors] = useState({});
@@ -92,19 +91,15 @@ function AddMerchant() {
         // Generate random ID for new merchant
         const newId = `M${Math.floor(Math.random() * 900 + 100)}`;
 
-        // Construct new merchant object
-        const initialAmount = Number(formData.initialTransaction || 0);
-        const initialFee = initialAmount ? Math.round(initialAmount * 0.03) : 0;
+        // Construct new merchant object (no initial transactions; populated from uploaded bills)
         const newMerchant = {
             id: newId,
             name: formData.name,
             bank: `****${formData.bank.slice(-4)}`, // Store matching earlier data format
-            profit: Math.max(initialAmount - initialFee, 0),
+            profit: 0,
             flagged: false,
             bankMismatch: false,
-            transactions: formData.initialTransaction ? [
-                { id: 1, amount: initialAmount, fee: initialFee, refund: 0 }
-            ] : []
+            transactions: [],
         };
 
         addMerchant(newMerchant);
@@ -161,21 +156,6 @@ function AddMerchant() {
                             </button>
                         </div>
                         {errors.bank && <span className="error-text">{errors.bank}</span>}
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="initialTransaction">Initial Test Transaction Amount ($)</label>
-                        <input
-                            type="number"
-                            id="initialTransaction"
-                            name="initialTransaction"
-                            value={formData.initialTransaction}
-                            onChange={handleChange}
-                            placeholder="Optional"
-                            min="0"
-                            step="0.01"
-                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                        />
                     </div>
 
                     <div className="form-actions">

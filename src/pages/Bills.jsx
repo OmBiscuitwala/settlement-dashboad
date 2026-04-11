@@ -79,6 +79,8 @@ function BillRow({ bill, onReaudit }) {
       <tr onClick={handleExpand}>
         <td>{bill.merchantId}</td>
         <td>{bill.fileName || "—"}</td>
+        <td>{bill.billNumber || "—"}</td>
+        <td>{bill.purpose || "—"}</td>
         <td>{uploadDate}</td>
         <td>{bill.parsedAmount != null ? `₹${bill.parsedAmount}` : "—"}</td>
         <td>
@@ -93,11 +95,21 @@ function BillRow({ bill, onReaudit }) {
 
       {expanded && (
         <tr>
-          <td colSpan={6} style={{ padding: 0 }}>
+          <td colSpan={8} style={{ padding: 0 }}>
             <div className="bill-expanded">
               <div className="bill-expanded-grid">
-                {/* Left: OCR text */}
+                {/* Left: OCR text + metadata */}
                 <div>
+                  <h4>Bill Metadata</h4>
+                  <table style={{ fontSize: 13, width: "100%", borderCollapse: "collapse", marginBottom: 16 }}>
+                    <tbody>
+                      <tr><td style={{ color: "#64748b", paddingRight: 12, paddingBottom: 4 }}>Bill No.</td><td><b>{bill.billNumber || "—"}</b></td></tr>
+                      <tr><td style={{ color: "#64748b", paddingRight: 12, paddingBottom: 4 }}>Purpose</td><td><b>{bill.purpose || "—"}</b></td></tr>
+                      <tr><td style={{ color: "#64748b", paddingRight: 12, paddingBottom: 4 }}>Department</td><td><b>{bill.department || "—"}</b></td></tr>
+                      <tr><td style={{ color: "#64748b", paddingRight: 12, paddingBottom: 4 }}>Bill Date</td><td><b>{bill.billDate || "—"}</b></td></tr>
+                      <tr><td style={{ color: "#64748b", paddingRight: 12, paddingBottom: 4 }}>Settlement Date</td><td><b>{bill.settlementDate || "—"}</b></td></tr>
+                    </tbody>
+                  </table>
                   <h4>Extracted OCR Text</h4>
                   <pre className="ocr-text">{bill.ocrText || "(no text)"}</pre>
                   <button
@@ -205,6 +217,8 @@ function Bills() {
               <tr>
                 <th>Merchant</th>
                 <th>File Name</th>
+                <th>Bill No.</th>
+                <th>Purpose</th>
                 <th>Upload Date</th>
                 <th>Extracted Amount</th>
                 <th>OCR Confidence</th>

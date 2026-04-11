@@ -26,16 +26,26 @@ function MerchantDetails() {
   );
 
   const [billCount, setBillCount] = useState(0);
+  const [bills, setBills] = useState([]);
 
-  const refreshBillCount = useCallback(async () => {
+  const refreshBills = useCallback(async () => {
     if (!id) return;
-    const bills = await getBillsByMerchant(id);
-    setBillCount(bills.length);
+    const loaded = await getBillsByMerchant(id);
+    setBills(loaded);
+    setBillCount(loaded.length);
   }, [id]);
 
   useEffect(() => {
-    refreshBillCount();
-  }, [refreshBillCount]);
+    refreshBills();
+  }, [refreshBills]);
+
+  // Compute bill-based totals from IndexedDB bills
+  const billTotal = useMemo(() => {
+    return bills.reduce((sum, b) => {
+      const amt = b.auditResult?.extracted_bill_total ?? b.parsedAmount ?? 0;
+      return sum + Number(amt);
+    }, 0);
+  }, [bills]);
 
   if (!merchant) {
     return (
@@ -135,10 +145,66 @@ function MerchantDetails() {
             }}>
               {billCount} on record
             </span>
+            {billCount > 0 && (
+              <span style={{
+                marginLeft: "auto",
+                background: "#f0fdf4",
+                color: "#16a34a",
+                borderRadius: "9999px",
+                padding: "2px 12px",
+                fontSize: "13px",
+                fontWeight: 700,
+                border: "1px solid #bbf7d0",
+              }}>
+                Bill Total: ₹{billTotal.toFixed(2)}
+              </span>
+            )}
           </div>
+          {/* Bill rows summary */}
+          {bills.length > 0 && (
+            <div style={{ overflowX: "auto", marginBottom: "16px" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ background: "#f8fafc" }}>
+                    <th style={{ padding: "8px 12px", textAlign: "left", color: "#64748b", fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: ".05em" }}>File</th>
+                    <th style={{ padding: "8px 12px", textAlign: "left", color: "#64748b", fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: ".05em" }}>Bill No.</th>
+                    <th style={{ padding: "8px 12px", textAlign: "left", color: "#64748b", fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: ".05em" }}>Amount</th>
+                    <th style={{ padding: "8px 12px", textAlign: "left", color: "#64748b", fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: ".05em" }}>Confidence</th>
+                    <th style={{ padding: "8px 12px", textAlign: "left", color: "#64748b", fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: ".05em" }}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bills.map((b) => (
+                    <tr key={b.id} style={{ borderTop: "1px solid #e2e8f0" }}>
+                      <td style={{ padding: "8px 12px", color: "#334155" }}>{b.fileName || "—"}</td>
+                      <td style={{ padding: "8px 12px", color: "#334155" }}>{b.billNumber || "—"}</td>
+                      <td style={{ padding: "8px 12px", fontWeight: 600, color: "#0f172a" }}>
+                        ₹{(b.auditResult?.extracted_bill_total ?? b.parsedAmount ?? 0).toFixed ? (b.auditResult?.extracted_bill_total ?? b.parsedAmount ?? 0).toFixed(2) : "—"}
+                      </td>
+                      <td style={{ padding: "8px 12px", color: "#64748b" }}>
+                        {b.ocrConfidence != null ? `${Math.round(b.ocrConfidence)}%` : "—"}
+                      </td>
+                      <td style={{ padding: "8px 12px" }}>
+                        <span style={{
+                          padding: "2px 8px",
+                          borderRadius: 9999,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          background: b.agentStatus === "AUDITED" ? "#dcfce7" : b.agentStatus === "FLAGGED" ? "#fee2e2" : "#f1f5f9",
+                          color: b.agentStatus === "AUDITED" ? "#16a34a" : b.agentStatus === "FLAGGED" ? "#dc2626" : "#64748b",
+                        }}>
+                          {b.agentStatus || "PENDING"}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
           <BillUploader
             merchantId={merchant.id}
-            onExtract={refreshBillCount}
+            onExtract={refreshBills}
           />
         </div>
       </div>
