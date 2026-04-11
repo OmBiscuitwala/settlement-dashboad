@@ -1,69 +1,56 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { merchants } from "../data";
+import { useMerchants } from "../context/MerchantContext";
 import { logEvent } from "../audit";
-import { calculateSettlement } from "../utils/settlement";
-import { STORAGE_KEYS } from "../utils/storage";
+import { runSettlementWorkflow } from "../utils/agentEngine";
+import { STORAGE_KEYS, writeJSON } from "../utils/storage";
 import "./Home.css";
 
 function Home() {
     const [query, setQuery] = useState("");
     const [error, setError] = useState("");
+    const [running, setRunning] = useState(false);
+    const [liveSteps, setLiveSteps] = useState([]);
     const navigate = useNavigate();
+    const { merchantsList } = useMerchants();
 
-    const merchantLookup = useMemo(
-        () =>
-            merchants.map((merchant) => ({
-                merchant,
-                normalizedName: merchant.name.toLowerCase(),
-            })),
-        []
-    );
-
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault();
         setError("");
+        setLiveSteps([]);
 
         if (!query.trim()) {
-            setError("? Please enter an instruction.");
+            setError("⚠ Please enter an instruction.");
             return;
         }
 
-        const normalizedQuery = query.toLowerCase();
-        const merchantMatch = merchantLookup.find(({ normalizedName }) =>
-            normalizedQuery.includes(normalizedName)
-        );
-        const merchant = merchantMatch?.merchant;
+        setRunning(true);
 
-        if (!merchant) {
-            setError("? Merchant not found in instruction.");
-            return;
+        try {
+            const agentResult = await runSettlementWorkflow(
+                query,
+                merchantsList,
+                "LIVE",
+                (step) => setLiveSteps((prev) => [...prev, step])
+            );
+
+            if (agentResult.error) {
+                setError(agentResult.error);
+                return;
+            }
+
+            writeJSON(STORAGE_KEYS.AGENT_RESULT, agentResult);
+            logEvent({
+                event: `Agent prepared settlement draft for ${agentResult.merchantName}`,
+                level: "MEDIUM",
+            });
+
+            navigate("/agent");
+        } catch (err) {
+            setError("❌ Agent workflow failed: " + err.message);
+        } finally {
+            setRunning(false);
         }
-
-        const { netPayable } = calculateSettlement(merchant.transactions);
-
-        const agentResult = {
-            prompt: query,
-            merchantId: merchant.id,
-            merchantName: merchant.name,
-            netPayable,
-            steps: [
-                "Intent Parsed ?",
-                "Merchant Identified ?",
-                "Transactions Loaded ?",
-                "Net Payable Computed ?",
-                "Risk Flagged: CRITICAL ?",
-                "Approval Required ?",
-            ],
-        };
-
-        localStorage.setItem(STORAGE_KEYS.AGENT_RESULT, JSON.stringify(agentResult));
-        logEvent({
-            event: `Agent prepared settlement draft for ${merchant.name}`,
-            level: "MEDIUM",
-        });
-
-        navigate("/agent");
     };
 
     return (
@@ -112,11 +99,11 @@ function Home() {
                                     </button>
                                     <button
                                         type="submit"
-                                        disabled={!query.trim()}
+                                        disabled={!query.trim() || running}
                                         className="px-6 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 hidden @[540px]:flex"
                                     >
                                         <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>send</span>
-                                        Run
+                                        {running ? "Running…" : "Run"}
                                     </button>
                                 </div>
                             </div>
@@ -124,6 +111,19 @@ function Home() {
                                 <div className="mt-4 flex gap-3 items-start px-4 py-3 bg-danger/10 rounded-lg border border-danger/30 animate-slideUp">
                                     <span className="material-symbols-outlined text-danger flex-shrink-0 mt-0.5" style={{ fontSize: '20px' }}>error_outline</span>
                                     <p className="text-danger font-medium text-sm">{error}</p>
+                                </div>
+                            )}
+                            {running && liveSteps.length > 0 && (
+                                <div className="mt-4 px-4 py-3 bg-indigo-50 border border-indigo-100 rounded-lg">
+                                    <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Agent Running…</p>
+                                    <ul className="flex flex-col gap-1">
+                                        {liveSteps.map((step, i) => (
+                                            <li key={i} className="text-sm text-slate-700 flex items-start gap-2">
+                                                <span className="material-symbols-outlined text-primary shrink-0" style={{ fontSize: '16px' }}>chevron_right</span>
+                                                {step}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             )}
                         </form>

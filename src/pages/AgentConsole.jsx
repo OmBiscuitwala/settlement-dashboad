@@ -65,6 +65,41 @@ function AgentConsole() {
                 </div>
               </div>
 
+              {/* Bill Audit Summary */}
+              {result.billAuditSummary && (
+                <div className="mb-8">
+                  <h3 className="text-slate-900 text-lg font-bold mb-3 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '24px' }}>receipt_long</span> Bill Audit Summary
+                  </h3>
+                  <div className="bg-surface-light border border-border-light rounded-xl p-5 shadow-sm grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Bills Audited</p>
+                      <p className="text-2xl font-bold text-slate-900">{result.billAuditSummary.totalBills}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Flagged</p>
+                      <p className={`text-2xl font-bold ${result.billAuditSummary.flaggedBills > 0 ? 'text-red-600' : 'text-emerald-600'}`}>
+                        {result.billAuditSummary.flaggedBills}
+                      </p>
+                    </div>
+                    {result.billAuditSummary.billBasedTotal != null && (
+                      <div>
+                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Bill Total</p>
+                        <p className="text-2xl font-bold text-slate-900">₹{result.billAuditSummary.billBasedTotal}</p>
+                      </div>
+                    )}
+                    {result.billAuditSummary.variance != null && (
+                      <div>
+                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Variance</p>
+                        <p className={`text-2xl font-bold ${result.billAuditSummary.variance > result.billAuditSummary.transactionNetPayable * 0.1 ? 'text-red-600' : 'text-emerald-600'}`}>
+                          ₹{Number(result.billAuditSummary.variance).toFixed(2)}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <div className="mb-10 bg-surface-light border border-border-light rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
                 <div className="flex items-center gap-4">
                   <div className="bg-indigo-50 text-primary p-3 rounded-xl border border-indigo-100">
