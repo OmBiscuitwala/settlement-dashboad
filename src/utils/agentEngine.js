@@ -102,7 +102,7 @@ async function auditBills(merchant, emitStep) {
       );
     } else {
       emitStep(
-        `Bill #${bill.id} Audited ✅ — Amount ₹${auditResult.extracted_bill_total}, Confidence ${Math.round((bill.ocrConfidence ?? auditResult.confidence_score * 100))}%`
+        `Bill #${bill.id} Audited ✅ — Amount ₹${auditResult.extracted_bill_total}, Confidence ${Math.round(bill.ocrConfidence ?? (auditResult.confidence_score * 100))}%`
       );
     }
 
