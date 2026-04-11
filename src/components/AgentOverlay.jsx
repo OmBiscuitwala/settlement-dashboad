@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { merchants } from "../data";
+import { useMerchants } from "../context/MerchantContext";
 import { logEvent } from "../audit";
 import { STORAGE_KEYS } from "../utils/storage";
 import { runSettlementWorkflow } from "../utils/agentEngine";
@@ -13,8 +13,10 @@ function AgentOverlay() {
   const [prompt, setPrompt] = useState("");
   const [error, setError] = useState("");
   const [running, setRunning] = useState(false);
+  const [liveSteps, setLiveSteps] = useState([]);
 
   const navigate = useNavigate();
+  const { merchantsList } = useMerchants();
 
   useEffect(() => {
     const handleOpenAgent = (e) => {
@@ -34,6 +36,7 @@ function AgentOverlay() {
   // ✅ Run Instruction via rule-based agent pipeline
   const handleSubmit = async () => {
     setError("");
+    setLiveSteps([]);
 
     if (!prompt.trim()) {
       setError("⚠ Please enter an instruction.");
@@ -45,8 +48,9 @@ function AgentOverlay() {
     try {
       const agentResult = await runSettlementWorkflow(
         prompt,
-        merchants,
-        getMode()
+        merchantsList,
+        getMode(),
+        (step) => setLiveSteps((prev) => [...prev, step])
       );
 
       if (agentResult.error) {
@@ -102,6 +106,14 @@ function AgentOverlay() {
           >
             {running ? "Running…" : "Run Instruction →"}
           </button>
+
+          {liveSteps.length > 0 && (
+            <ul className="agent-live-steps">
+              {liveSteps.map((step, i) => (
+                <li key={i}>{step}</li>
+              ))}
+            </ul>
+          )}
 
           {error && <p className="error">{error}</p>}
         </div>

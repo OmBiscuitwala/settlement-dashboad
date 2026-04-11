@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { getAllBills, updateBillAuditResult } from "../utils/billDatabase";
+import { getAllBills, getBillsByMerchant, updateBillAuditResult } from "../utils/billDatabase";
 import { auditMerchantBill } from "../utils/billSettlementAuditor";
 import "./Bills.css";
 
@@ -40,10 +40,23 @@ function BillRow({ bill, onReaudit }) {
     e.stopPropagation();
     setReauditRunning(true);
     try {
+      // Compute running outstanding from all bills audited before this one for the same merchant
+      const merchantBills = await getBillsByMerchant(bill.merchantId);
+      const sortedBills = [...merchantBills].sort(
+        (a, b) => new Date(a.uploadedAt) - new Date(b.uploadedAt)
+      );
+      let runningOutstanding = 0;
+      for (const b of sortedBills) {
+        if (b.id === bill.id) break;
+        if (b.auditResult?.new_outstanding_total != null) {
+          runningOutstanding = b.auditResult.new_outstanding_total;
+        }
+      }
+
       const auditResult = auditMerchantBill({
         merchant_id: bill.merchantId,
         bill_text: bill.ocrText || "",
-        previous_outstanding_amount: 0,
+        previous_outstanding_amount: runningOutstanding,
       });
       const agentStatus = auditResult.is_verification_passed
         ? "AUDITED"

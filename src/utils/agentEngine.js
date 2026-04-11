@@ -59,12 +59,13 @@ async function auditBills(merchant, emitStep) {
 
   const auditedBills = [];
   let flagCount = 0;
+  let runningOutstanding = 0;
 
   for (const bill of bills) {
     const auditResult = auditMerchantBill({
       merchant_id: bill.merchantId,
       bill_text: bill.ocrText || "",
-      previous_outstanding_amount: 0,
+      previous_outstanding_amount: runningOutstanding,
     });
 
     let agentStatus = "AUDITED";
@@ -106,6 +107,9 @@ async function auditBills(merchant, emitStep) {
     }
 
     await updateBillAuditResult(bill.id, auditResult, agentStatus);
+
+    // Carry forward the new outstanding total for the next bill
+    runningOutstanding = auditResult.new_outstanding_total;
 
     auditedBills.push({ ...bill, auditResult, agentStatus, flags });
   }
@@ -201,16 +205,20 @@ function processPayment(
 // ── Public API ─────────────────────────────────────────────────────────────────
 
 /**
- * runSettlementWorkflow(prompt, merchants, mode)
+ * runSettlementWorkflow(prompt, merchants, mode, onStep)
  *
  * @param {string}   prompt     - free-text instruction from the user
  * @param {Array}    merchants  - full merchant list from data.js
  * @param {string}   mode       - "LIVE" | "SHADOW"
+ * @param {Function} [onStep]   - optional callback invoked with each step string as the pipeline runs
  * @returns {Object} agentResult - matches shape expected by AgentConsole
  */
-export async function runSettlementWorkflow(prompt, merchants, mode = "LIVE") {
+export async function runSettlementWorkflow(prompt, merchants, mode = "LIVE", onStep) {
   const steps = [];
-  const emitStep = (msg) => steps.push(msg);
+  const emitStep = (msg) => {
+    steps.push(msg);
+    if (typeof onStep === "function") onStep(msg);
+  };
 
   // Stage 1 – Parse Prompt
   const parsed = parsePrompt(prompt, merchants);
