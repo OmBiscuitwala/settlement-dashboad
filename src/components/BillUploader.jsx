@@ -215,7 +215,7 @@ function BillUploader({ onExtract, merchantId }) {
           merchant_id: merchantId,
           bill_text: pendingData.ocrText,
           previous_outstanding_amount: 0,
-          is_image_blurry: pendingData.ocrConfidence < 60,
+          is_image_blurry: pendingData.ocrConfidence < 60 && pendingData.ocrText.length < 20,
         });
         const agentStatus = auditResult.is_verification_passed ? "AUDITED" : "FLAGGED";
         await updateBillAuditResult(id, auditResult, agentStatus);

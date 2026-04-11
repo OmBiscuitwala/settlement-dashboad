@@ -14,7 +14,7 @@ function BillRow({ bill, onReaudit }) {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [reauditRunning, setReauditRunning] = useState(false);
 
-  // Revoke object URL when component unmounts to avoid memory leaks
+  // Revoke object URL when component unmounts or previewUrl changes to avoid memory leaks
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);

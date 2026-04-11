@@ -179,7 +179,11 @@ function MerchantDetails() {
                       <td style={{ padding: "8px 12px", color: "#334155" }}>{b.fileName || "—"}</td>
                       <td style={{ padding: "8px 12px", color: "#334155" }}>{b.billNumber || "—"}</td>
                       <td style={{ padding: "8px 12px", fontWeight: 600, color: "#0f172a" }}>
-                        ₹{(b.auditResult?.extracted_bill_total ?? b.parsedAmount ?? 0).toFixed ? (b.auditResult?.extracted_bill_total ?? b.parsedAmount ?? 0).toFixed(2) : "—"}
+                        {(() => {
+                          const rawAmt = b.auditResult?.extracted_bill_total ?? b.parsedAmount ?? 0;
+                          const num = Number(rawAmt);
+                          return Number.isFinite(num) ? `₹${num.toFixed(2)}` : "—";
+                        })()}
                       </td>
                       <td style={{ padding: "8px 12px", color: "#64748b" }}>
                         {b.ocrConfidence != null ? `${Math.round(b.ocrConfidence)}%` : "—"}

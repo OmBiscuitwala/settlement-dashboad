@@ -3,7 +3,12 @@
  * Falls back gracefully if pdfjs fails.
  */
 async function pdfToCanvas(file) {
-  const pdfjsLib = await import("pdfjs-dist");
+  let pdfjsLib;
+  try {
+    pdfjsLib = await import("pdfjs-dist");
+  } catch (importErr) {
+    throw new Error("pdfjs-dist could not be loaded: " + importErr.message);
+  }
 
   // Point the PDF.js worker to its bundled web worker
   if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {

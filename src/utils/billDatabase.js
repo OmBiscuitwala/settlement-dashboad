@@ -100,7 +100,7 @@ export async function saveManualBill({
 
 export async function logAuditEvent({ event, level }) {
   return db.auditLog.add({
-    time: new Date().toLocaleTimeString('en-US', { hour12: false }),
+    time: new Date().toISOString(),
     event,
     level,
   });
